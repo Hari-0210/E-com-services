@@ -1,20 +1,18 @@
 const { query } = require("../../helper/executequery");
 const { responseHandler } = require("../../utilities");
 const { responseMessages } = require("../../utilities/messages");
-const {
-  getTenantIdFromRequest,
-  mysqlResponseHandler,
-} = require("../../utilities/utility");
-const { fetchProduct } = require("../query/product.query");
+const { mysqlSingleResponseHandler } = require("../../utilities/utility");
+const { fetchProductAdmin } = require("../query/product.query");
 
 const fetchProducts = async (req, res) => {
   try {
-    const tenantId = getTenantIdFromRequest(req);
-    let resp = await query(fetchProduct(tenantId));
-    resp = mysqlResponseHandler(resp);
+    const storeId = req.body.storeId;
+    let resp = await query(fetchProductAdmin(storeId));
+    resp = mysqlSingleResponseHandler(resp);
+    const parsedProductJson = JSON.parse(resp.productJson);
     responseHandler.successResponse(
       res,
-      resp,
+      parsedProductJson,
       responseMessages.fetchedSuccessfully
     );
   } catch (err) {
