@@ -6,6 +6,7 @@ exports.responseMessages = {
   fetchedSuccessfully: "Fetched Successfully",
   loginSuccessfully: "Login Successfully",
   storeAlreadyCreated: "Store already created for this user",
+  uploadSuccessfully: "Uploaded Successfully",
   successBoolean: true,
   failureBoolean: false,
 };

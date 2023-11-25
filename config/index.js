@@ -17,7 +17,7 @@ const env = () => {
 };
 module.exports = {
   ...env(),
-  noAuthRequired: ["/api/auth", "/api/store"],
+  noAuthRequired: ["/api/auth", "/api/store", "/images"],
   aws_access_key_id: "AKIAQPHMHKKQGLJ47LED",
   aws_secret_access_key: "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",
   spacesEndpoint: "gobiggguru-uqmr16rdz9ynhe3gcugzmr5j6fhegaps3a-s3alias",

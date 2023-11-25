@@ -41,7 +41,10 @@ module.exports = () => {
         `);
   });
   app.use(express.static(path.join(__dirname, "../docs")));
-
+  app.use(
+    "/images",
+    express.static(path.join(__dirname, "../resources", "assets"))
+  );
   app.use((error, request, response, next) => {
     if (error !== null) {
       logger.error(`express/index.js:line27 :: ${error.message}`);
