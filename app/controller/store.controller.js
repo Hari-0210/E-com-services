@@ -59,7 +59,50 @@ const storePresent = async (req, res) => {
   }
 };
 
+const createStoreSettingsHandler = async (req, res) => {
+  try {
+    await createProductSchema.validateAsync(req.body);
+    const { storeId, ...rest } = req.body;
+    let productResp = await query(fetchProductAdmin(storeId));
+    productResp = mysqlSingleResponseHandler(productResp);
+
+    if (Object.keys(productResp).length === 0) {
+      let productJson = [];
+      productJson.push(rest);
+      productJson = productJson.map((e, i) => {
+        return {
+          ...e,
+          productId: i + 1,
+        };
+      });
+      await query(
+        insertProducts(JSON.stringify(productJson, null, 2), storeId)
+      );
+    } else {
+      let productJson = JSON.parse(productResp.productJson);
+      productJson.push(rest);
+      productJson = productJson.map((e, i) => {
+        return {
+          ...e,
+          productId: i + 1,
+        };
+      });
+      await query(
+        updateProducts(JSON.stringify(productJson, null, 2), storeId)
+      );
+    }
+    responseHandler.successResponse(
+      res,
+      rest,
+      responseMessages.addedSuccessfully
+    );
+  } catch (err) {
+    responseHandler.errorResponse(res, err.message, err.message);
+  }
+};
+
 module.exports = {
   createStore: createStoreHandler,
   storePresent: storePresent,
+  createStoreSettings: createStoreSettingsHandler,
 };

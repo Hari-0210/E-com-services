@@ -17,4 +17,10 @@ module.exports = {
     (storeid, productJson)
     VALUES('${storeId}', '${productJson}');
     `,
+  insertProductImg: () =>
+    `INSERT INTO productImages ( storeId, image, fileName, mimeType) VALUES (?, ?, ?, ?);
+    `,
+  fetchProductImg: (storeId, fileName) =>
+    `select * from productImages where storeId = '${storeId}' and fileName =  '${fileName}';
+    `,
 };

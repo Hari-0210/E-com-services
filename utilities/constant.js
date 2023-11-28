@@ -9,9 +9,11 @@ const subRoutes = {
   login: "/login",
   signUp: "/signUp",
   add: "/add",
+  update: "/update",
   upload: "/upload",
   isStore: "/isStore",
   fetch: "/fetch",
+  imgFetch: "/img",
 };
 
 module.exports = {

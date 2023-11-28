@@ -48,9 +48,27 @@ const createProductSchema = Joi.object({
   isNewProduct: Joi.string().required(),
 });
 
+const updateProductSchema = Joi.object({
+  productId: Joi.number().required(),
+  name: Joi.string().required(),
+  categories: Joi.array().required(),
+  originalPrice: Joi.string().required(),
+  sellingPrice: Joi.string().required(),
+  unit: Joi.string().required(),
+  qty: Joi.string().required(),
+  description: Joi.string().required(),
+  storeId: Joi.number().required(),
+  attributes: Joi.any(),
+  img: Joi.array().required(),
+  features: Joi.string().required(),
+  topSelling: Joi.string().required(),
+  isNewProduct: Joi.string().required(),
+});
+
 module.exports = {
   loginSchema,
   signUpSchema,
   createStoreSchema,
   createProductSchema,
+  updateProductSchema,
 };
