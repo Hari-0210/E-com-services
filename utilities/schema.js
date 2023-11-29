@@ -65,10 +65,21 @@ const updateProductSchema = Joi.object({
   isNewProduct: Joi.string().required(),
 });
 
+const siteSettingsSchema = Joi.object({
+  storeId: Joi.number().required(),
+  name: Joi.string().required(),
+  mobile: Joi.string().required(),
+  email: Joi.string().required(),
+  address: Joi.string().required(),
+  insta: Joi.string().required(),
+  img: Joi.string().required(),
+});
+
 module.exports = {
   loginSchema,
   signUpSchema,
   createStoreSchema,
   createProductSchema,
   updateProductSchema,
+  siteSettingsSchema,
 };
