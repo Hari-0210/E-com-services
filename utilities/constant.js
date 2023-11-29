@@ -13,6 +13,8 @@ const subRoutes = {
   upload: "/upload",
   isStore: "/isStore",
   fetch: "/fetch",
+  fetchSettings: "/fetchSettings",
+  addSettings: "/addSettings",
   imgFetch: "/img",
 };
 
