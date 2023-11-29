@@ -2,12 +2,21 @@ const { query } = require("../../helper/executequery");
 const { generateToken } = require("../../helper/jwtToken");
 const { responseHandler } = require("../../utilities");
 const { responseMessages } = require("../../utilities/messages");
-const { createStoreSchema } = require("../../utilities/schema");
+const {
+  createStoreSchema,
+  siteSettingsSchema,
+} = require("../../utilities/schema");
 const {
   getTenantIdFromRequest,
   mysqlSingleResponseHandler,
 } = require("../../utilities/utility");
-const { storePresentQuery, store } = require("../query/store.query");
+const {
+  storePresentQuery,
+  store,
+  siteSettingsQuery,
+  insertSiteSettingsQuery,
+  updateSiteSettingsQuery,
+} = require("../query/store.query");
 const { createStoreSP } = require("../services/store.services");
 
 const createStoreHandler = async (req, res) => {
@@ -61,34 +70,20 @@ const storePresent = async (req, res) => {
 
 const createStoreSettingsHandler = async (req, res) => {
   try {
-    await createProductSchema.validateAsync(req.body);
+    await siteSettingsSchema.validateAsync(req.body);
     const { storeId, ...rest } = req.body;
-    let productResp = await query(fetchProductAdmin(storeId));
-    productResp = mysqlSingleResponseHandler(productResp);
+    let resp = await query(siteSettingsQuery(storeId));
+    resp = mysqlSingleResponseHandler(resp);
 
-    if (Object.keys(productResp).length === 0) {
-      let productJson = [];
-      productJson.push(rest);
-      productJson = productJson.map((e, i) => {
-        return {
-          ...e,
-          productId: i + 1,
-        };
-      });
+    if (Object.keys(resp).length === 0) {
+      let json = rest;
       await query(
-        insertProducts(JSON.stringify(productJson, null, 2), storeId)
+        insertSiteSettingsQuery(storeId, JSON.stringify(json, null, 2))
       );
     } else {
-      let productJson = JSON.parse(productResp.productJson);
-      productJson.push(rest);
-      productJson = productJson.map((e, i) => {
-        return {
-          ...e,
-          productId: i + 1,
-        };
-      });
+      let json = rest;
       await query(
-        updateProducts(JSON.stringify(productJson, null, 2), storeId)
+        updateSiteSettingsQuery(storeId, JSON.stringify(json, null, 2))
       );
     }
     responseHandler.successResponse(
@@ -101,8 +96,25 @@ const createStoreSettingsHandler = async (req, res) => {
   }
 };
 
+const fetchSiteSettingsHandler = async (req, res) => {
+  try {
+    const { storeId } = req.body;
+    let resp = await query(siteSettingsQuery(storeId));
+    resp = mysqlSingleResponseHandler(resp);
+
+    responseHandler.successResponse(
+      res,
+      resp,
+      responseMessages.fetchedSuccessfully
+    );
+  } catch (err) {
+    responseHandler.errorResponse(res, err.message, err.message);
+  }
+};
+
 module.exports = {
   createStore: createStoreHandler,
   storePresent: storePresent,
   createStoreSettings: createStoreSettingsHandler,
+  fetchSiteSettings: fetchSiteSettingsHandler,
 };
