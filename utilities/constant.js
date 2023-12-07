@@ -16,6 +16,9 @@ const subRoutes = {
   fetchSettings: "/fetchSettings",
   addSettings: "/addSettings",
   imgFetch: "/img",
+  cart: "/cart",
+  deleteCart: "/deleteCart",
+  fetchCart: "/fetchCart",
 };
 
 module.exports = {
